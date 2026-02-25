@@ -2,8 +2,14 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>PROD PRO - Produção do Dia (Turnos)</title>
+
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2696/2696191.png">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2696/2696191.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -48,70 +54,44 @@
     </section>
 
     <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-
       <div class="bg-white p-6 rounded-2xl border shadow-sm">
-        <div class="text-xs font-black uppercase text-gray-400">Produção Máquinas - 1º Turno</div>
-        <div class="text-3xl font-black mt-2">
-          <span id="machS1">0</span> <span class="text-sm text-gray-400">kg</span>
-        </div>
+        <div class="text-xs font-black uppercase text-gray-400">Máquinas - 1º Turno</div>
+        <div class="text-3xl font-black mt-2 text-slate-800"><span id="machS1">0</span> <span class="text-sm text-gray-400 font-medium">kg</span></div>
       </div>
-
       <div class="bg-white p-6 rounded-2xl border shadow-sm">
-        <div class="text-xs font-black uppercase text-gray-400">Produção Balança - 1º Turno</div>
-        <div class="text-3xl font-black mt-2">
-          <span id="scaleS1">0</span> <span class="text-sm text-gray-400">kg</span>
-        </div>
+        <div class="text-xs font-black uppercase text-gray-400">Balança - 1º Turno</div>
+        <div class="text-3xl font-black mt-2 text-slate-800"><span id="scaleS1">0</span> <span class="text-sm text-gray-400 font-medium">kg</span></div>
       </div>
-
       <div class="bg-white p-6 rounded-2xl border shadow-sm">
-        <div class="text-xs font-black uppercase text-gray-400">Produção Máquinas - 2º Turno</div>
-        <div class="text-3xl font-black mt-2">
-          <span id="machS2">0</span> <span class="text-sm text-gray-400">kg</span>
-        </div>
+        <div class="text-xs font-black uppercase text-gray-400">Máquinas - 2º Turno</div>
+        <div class="text-3xl font-black mt-2 text-slate-800"><span id="machS2">0</span> <span class="text-sm text-gray-400 font-medium">kg</span></div>
       </div>
-
       <div class="bg-white p-6 rounded-2xl border shadow-sm">
-        <div class="text-xs font-black uppercase text-gray-400">Produção Balança - 2º Turno</div>
-        <div class="text-3xl font-black mt-2">
-          <span id="scaleS2">0</span> <span class="text-sm text-gray-400">kg</span>
-        </div>
+        <div class="text-xs font-black uppercase text-gray-400">Balança - 2º Turno</div>
+        <div class="text-3xl font-black mt-2 text-slate-800"><span id="scaleS2">0</span> <span class="text-sm text-gray-400 font-medium">kg</span></div>
       </div>
-
     </section>
 
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
       <h2 class="text-xl font-black mb-2 flex items-center gap-2">
         <i data-lucide="line-chart" class="text-gray-400 w-5 h-5"></i> Resumo Final
       </h2>
-      <p class="text-sm text-gray-500 mb-6">
-        Total das máquinas (soma dos dois turnos) e total das balanças (soma dos dois turnos).
-      </p>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
-          <div class="text-xs font-black uppercase text-blue-700">Total produzido (Máquinas) - 1º + 2º turno</div>
-          <div class="text-3xl font-black text-blue-800 mt-2">
-            <span id="machAll">0</span> <span class="text-sm text-blue-600">kg</span>
-          </div>
+          <div class="text-xs font-black uppercase text-blue-700">Total produzido (Máquinas)</div>
+          <div class="text-3xl font-black text-blue-800 mt-2"><span id="machAll">0</span> <span class="text-sm text-blue-600">kg</span></div>
         </div>
-
         <div class="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
-          <div class="text-xs font-black uppercase text-emerald-700">Total pesado (Balanças) - 1º + 2º turno</div>
-          <div class="text-3xl font-black text-emerald-800 mt-2">
-            <span id="scaleAll">0</span> <span class="text-sm text-emerald-600">kg</span>
-          </div>
+          <div class="text-xs font-black uppercase text-emerald-700">Total pesado (Balanças)</div>
+          <div class="text-3xl font-black text-emerald-800 mt-2"><span id="scaleAll">0</span> <span class="text-sm text-emerald-600">kg</span></div>
         </div>
       </div>
     </section>
 
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
-      <h2 class="text-xl font-black mb-2 flex items-center gap-2">
+      <h2 class="text-xl font-black mb-6 flex items-center gap-2">
         <i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Lançar Produção
       </h2>
-      <p class="text-sm text-gray-500 mb-6">
-        Selecione turno, tipo (máquina/balança), equipamento e informe kg. Pode lançar várias vezes ao dia.
-      </p>
-
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Turno</label>
@@ -120,7 +100,6 @@
             <option value="2">2º Turno</option>
           </select>
         </div>
-
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Tipo</label>
           <select id="sourceType" class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none">
@@ -128,20 +107,15 @@
             <option value="scale">Balança</option>
           </select>
         </div>
-
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Equipamento</label>
           <select id="sourceId" class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"></select>
         </div>
-
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Kg</label>
-          <input id="kg" type="number" step="0.001" min="0"
-                 placeholder="Ex: 1250"
-                 class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"/>
+          <input id="kg" type="number" step="0.001" min="0" placeholder="Ex: 1250" class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"/>
         </div>
       </div>
-
       <div class="mt-5 flex items-center gap-3">
         <button id="btnAdd" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-black hover:bg-blue-700 shadow-lg shadow-blue-100 flex items-center gap-2 transition-all active:scale-95">
           <i data-lucide="plus"></i> Adicionar
@@ -151,14 +125,11 @@
     </section>
 
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
-      <div class="flex items-center justify-between flex-wrap gap-3">
-        <h2 class="text-xl font-black">Resumo por Máquina / Balança</h2>
-        <button id="btnRefresh" class="text-sm font-black uppercase text-blue-600 hover:text-blue-800 flex items-center gap-2">
-          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Atualizar
-        </button>
+      <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+        <h2 class="text-xl font-black">Resumo por Equipamento</h2>
+        <button id="btnRefresh" class="text-sm font-black uppercase text-blue-600 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Atualizar</button>
       </div>
-
-      <div class="mt-4 overflow-x-auto">
+      <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead class="bg-slate-50 border-b">
             <tr>
@@ -174,14 +145,11 @@
     </section>
 
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
-      <div class="flex items-center justify-between gap-3 flex-wrap">
-        <h2 class="text-xl font-black">Lançamentos (corrigir erro)</h2>
-        <button id="btnRefreshLogs" class="text-sm font-black uppercase text-blue-600 hover:text-blue-800">
-          Atualizar
-        </button>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-black">Lançamentos do Dia</h2>
+        <button id="btnRefreshLogs" class="text-sm font-black uppercase text-blue-600">Atualizar</button>
       </div>
-
-      <div class="mt-4 overflow-x-auto">
+      <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead class="bg-slate-50 border-b">
             <tr>
@@ -197,16 +165,13 @@
         </table>
       </div>
     </section>
-
   </main>
 
   <script>
-    // Inicia os ícones ao carregar
     lucide.createIcons();
 
     const SUPABASE_URL = "https://zujimauhxpbtmllpyfvl.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_mGw-sOGtdwJoCIUAoS5hfQ_aYvKOEPn";
-
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const el = (id) => document.getElementById(id);
@@ -214,20 +179,17 @@
 
     function fmtTime(iso){
       const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return '';
-      return d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+      return Number.isNaN(d.getTime()) ? '' : d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
     }
 
     let machines = [];
     let scales = [];
 
     async function loadCatalog() {
-      const [{ data: m, error: me }, { data: s, error: se }] = await Promise.all([
+      const [{ data: m }, { data: s }] = await Promise.all([
         sb.from('machines').select('id,code').eq('active', true).order('code'),
         sb.from('scales').select('id,code').eq('active', true).order('code')
       ]);
-      if (me) console.error(me);
-      if (se) console.error(se);
       machines = m || [];
       scales = s || [];
       refreshSourceDropdown();
@@ -241,45 +203,22 @@
 
     async function loadTotalsByDate() {
       const prod_date = el('datePick').value;
-
-      const { data, error } = await sb
-        .from('v_prod_totals')
-        .select('shift,source_type,total_kg')
-        .eq('prod_date', prod_date);
-
-      if (error) { console.error(error); return; }
-
-      const get = (shift, type) =>
-        Number((data || []).find(x => x.shift === shift && x.source_type === type)?.total_kg || 0);
-
-      const machS1 = get(1,'machine');
-      const scaleS1 = get(1,'scale');
-      const machS2 = get(2,'machine');
-      const scaleS2 = get(2,'scale');
-
-      el('machS1').innerText = fmt(machS1);
-      el('scaleS1').innerText = fmt(scaleS1);
-      el('machS2').innerText = fmt(machS2);
-      el('scaleS2').innerText = fmt(scaleS2);
-
-      el('machAll').innerText = fmt(machS1 + machS2);
-      el('scaleAll').innerText = fmt(scaleS1 + scaleS2);
+      const { data } = await sb.from('v_prod_totals').select('*').eq('prod_date', prod_date);
+      const get = (shift, type) => Number((data || []).find(x => x.shift === shift && x.source_type === type)?.total_kg || 0);
+      
+      const m1 = get(1,'machine'), s1 = get(1,'scale'), m2 = get(2,'machine'), s2 = get(2,'scale');
+      el('machS1').innerText = fmt(m1); el('scaleS1').innerText = fmt(s1);
+      el('machS2').innerText = fmt(m2); el('scaleS2').innerText = fmt(s2);
+      el('machAll').innerText = fmt(m1 + m2); el('scaleAll').innerText = fmt(s1 + s2);
     }
 
     async function loadBySourceByDate() {
       const prod_date = el('datePick').value;
-
-      const { data, error } = await sb
-        .from('v_prod_by_source')
-        .select('shift,source_type,source_code,total_kg')
-        .eq('prod_date', prod_date);
-
-      if (error) { console.error(error); return; }
-
+      const { data } = await sb.from('v_prod_by_source').select('*').eq('prod_date', prod_date);
       el('bySource').innerHTML = (data || []).map(r => `
         <tr>
           <td class="p-4 font-black text-slate-600">${r.shift === 1 ? '1º' : '2º'}</td>
-          <td class="p-4"><span class="bg-slate-100 px-2 py-1 rounded text-xs font-bold">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</span></td>
+          <td class="p-4"><span class="bg-slate-100 px-2 py-1 rounded text-[10px] font-black uppercase text-slate-500">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</span></td>
           <td class="p-4 font-black">${r.source_code || '-'}</td>
           <td class="p-4 text-right font-black text-blue-600">${fmt(r.total_kg)}</td>
         </tr>
@@ -288,38 +227,24 @@
 
     async function loadLogs() {
       const prod_date = el('datePick').value;
-
-      const { data, error } = await sb
-        .from('v_prod_logs_list')
-        .select('*')
-        .eq('prod_date', prod_date)
-        .limit(200);
-
-      if (error) { console.error(error); return; }
-
+      const { data } = await sb.from('v_prod_logs_list').select('*').eq('prod_date', prod_date).limit(200);
       el('logsList').innerHTML = (data || []).map(r => `
-        <tr>
-          <td class="p-4 font-bold text-slate-500">${fmtTime(r.created_at)}</td>
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="p-4 font-bold text-slate-400">${fmtTime(r.created_at)}</td>
           <td class="p-4 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
-          <td class="p-4 text-xs font-bold uppercase text-slate-400">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</td>
+          <td class="p-4 text-[10px] font-black uppercase text-slate-400">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</td>
           <td class="p-4 font-black">${r.source_code || '-'}</td>
           <td class="p-4 text-right font-black text-slate-800">${fmt(r.kg)}</td>
           <td class="p-4 text-right">
-            <button class="bg-red-50 text-red-600 border border-red-100 px-3 py-2 rounded-xl text-xs font-black hover:bg-red-600 hover:text-white transition-all"
-              onclick="deleteLog(${r.id})">
-              Apagar
-            </button>
+            <button class="bg-red-50 text-red-600 border border-red-100 px-3 py-2 rounded-xl text-xs font-black hover:bg-red-600 hover:text-white transition-all" onclick="deleteLog(${r.id})">Apagar</button>
           </td>
         </tr>
-      `).join('') || `<tr><td colspan="6" class="p-6 text-center text-gray-400 font-bold">Sem lançamentos</td></tr>`;
+      `).join('') || `<tr><td colspan="6" class="p-6 text-center text-gray-400 font-bold">Vazio</td></tr>`;
     }
 
     async function deleteLog(id) {
-      if (!confirm("Tem certeza que deseja apagar este lançamento?")) return;
-
-      const { error } = await sb.from('production_logs').delete().eq('id', id);
-      if (error) { console.error(error); alert("Erro ao apagar."); return; }
-
+      if (!confirm("Apagar este registro?")) return;
+      await sb.from('production_logs').delete().eq('id', id);
       await reloadAll();
     }
     window.deleteLog = deleteLog;
@@ -331,76 +256,27 @@
     }
 
     async function addLog() {
-      const prod_date = el('datePick').value;
-      const shift = Number(el('shift').value);
-      const source_type = el('sourceType').value;
-      const source_id = Number(el('sourceId').value);
-      const kg = Number(el('kg').value);
-
-      if (!prod_date) { el('msg').innerText = "Selecione a data."; return; }
-      if (!source_id || Number.isNaN(kg) || kg <= 0) {
-        el('msg').innerText = "Informe um KG válido e selecione o equipamento.";
-        return;
-      }
-
-      el('btnAdd').disabled = true;
-      el('msg').innerText = "Salvando...";
-
-      const { error } = await sb.from('production_logs').insert([{
-        prod_date, shift, source_type, source_id, kg
-      }]);
-
+      const prod_date = el('datePick').value, shift = Number(el('shift').value), sourceType = el('sourceType').value, sourceId = Number(el('sourceId').value), kg = Number(el('kg').value);
+      if (!sourceId || isNaN(kg) || kg <= 0) { el('msg').innerText = "Verifique os dados."; return; }
+      el('btnAdd').disabled = true; el('msg').innerText = "Salvando...";
+      const { error } = await sb.from('production_logs').insert([{ prod_date, shift, source_type: sourceType, source_id: sourceId, kg }]);
       el('btnAdd').disabled = false;
-
-      if (error) {
-        console.error(error);
-        el('msg').innerText = "Erro ao salvar (ver Console/F12).";
-        return;
-      }
-
-      el('kg').value = '';
-      el('msg').innerText = "Lançamento registrado ✅";
-      await reloadAll();
-    }
-
-    function startRealtime() {
-      sb.channel('prod-realtime')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'production_logs' }, () => reloadAll())
-        .subscribe();
+      if (!error) { el('kg').value = ''; el('msg').innerText = "Registrado ✅"; await reloadAll(); }
     }
 
     window.onload = async () => {
       const today = new Date().toISOString().slice(0,10);
       el('datePick').value = today;
-      el('todayLabel').innerText = new Date().toLocaleDateString('pt-BR');
-
       await loadCatalog();
       await reloadAll();
-      startRealtime();
-
       el('sourceType').addEventListener('change', refreshSourceDropdown);
       el('btnAdd').addEventListener('click', addLog);
-
+      el('datePick').addEventListener('change', reloadAll);
+      el('btnHoje').addEventListener('click', () => { el('datePick').value = today; reloadAll(); });
+      el('btnOntem').addEventListener('click', () => { const d = new Date(); d.setDate(d.getDate() - 1); el('datePick').value = d.toISOString().slice(0,10); reloadAll(); });
       el('btnRefresh').addEventListener('click', reloadAll);
       el('btnRefreshLogs').addEventListener('click', loadLogs);
-
-      el('datePick').addEventListener('change', reloadAll);
-
-      el('btnHoje').addEventListener('click', () => {
-        el('datePick').value = today;
-        reloadAll();
-      });
-
-      el('btnOntem').addEventListener('click', () => {
-        const d = new Date();
-        d.setDate(d.getDate() - 1);
-        el('datePick').value = d.toISOString().slice(0,10);
-        reloadAll();
-      });
-
-      lucide.createIcons();
     };
   </script>
-
 </body>
 </html>
