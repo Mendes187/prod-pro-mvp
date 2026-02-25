@@ -19,12 +19,28 @@
         PROD <span class="text-blue-500">PRO</span>
       </h1>
       <div class="text-xs font-black text-slate-300">
-        Hoje: <span id="todayLabel"></span>
+        Data selecionada: <span id="todayLabel"></span>
       </div>
     </div>
   </nav>
 
   <main class="container mx-auto p-4 md:p-8 space-y-8">
+
+    <!-- SELETOR DE DATA (HISTÓRICO) -->
+    <section class="bg-white p-4 rounded-2xl border shadow-sm flex flex-wrap gap-3 items-center justify-between">
+      <div>
+        <div class="text-xs font-black uppercase text-gray-400">Data do apontamento</div>
+        <input id="datePick" type="date" class="mt-1 border p-3 rounded-xl font-bold"/>
+      </div>
+      <div class="flex gap-2">
+        <button id="btnOntem" class="bg-slate-100 px-4 py-3 rounded-xl font-black hover:bg-slate-200">
+          Ontem
+        </button>
+        <button id="btnHoje" class="bg-slate-900 text-white px-4 py-3 rounded-xl font-black hover:bg-black">
+          Hoje
+        </button>
+      </div>
+    </section>
 
     <!-- 4 TOTAIS SEPARADOS -->
     <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -59,9 +75,9 @@
 
     </section>
 
-    <!-- RELATÓRIO FINAL (SOMAS DO DIA) -->
+    <!-- RESUMO FINAL (SOMAS DO DIA) -->
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
-      <h2 class="text-xl font-black mb-2">Resumo Final do Dia</h2>
+      <h2 class="text-xl font-black mb-2">Resumo Final</h2>
       <p class="text-sm text-gray-500 mb-6">
         Total das máquinas (soma dos dois turnos) e total das balanças (soma dos dois turnos).
       </p>
@@ -128,10 +144,10 @@
       </div>
     </section>
 
-    <!-- RESUMO POR EQUIPAMENTO (HOJE) -->
+    <!-- RESUMO POR EQUIPAMENTO (DATA SELECIONADA) -->
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
       <div class="flex items-center justify-between flex-wrap gap-3">
-        <h2 class="text-xl font-black">Resumo por Máquina / Balança (Hoje)</h2>
+        <h2 class="text-xl font-black">Resumo por Máquina / Balança</h2>
         <button id="btnRefresh" class="text-sm font-black uppercase text-blue-600 hover:text-blue-800 flex items-center gap-2">
           <i data-lucide="refresh-cw"></i> Atualizar
         </button>
@@ -152,12 +168,37 @@
       </div>
     </section>
 
+    <!-- LANÇAMENTOS DO DIA (APAGAR ERROS) -->
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <h2 class="text-xl font-black">Lançamentos (corrigir erro)</h2>
+        <button id="btnRefreshLogs" class="text-sm font-black uppercase text-blue-600 hover:text-blue-800">
+          Atualizar
+        </button>
+      </div>
+
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-slate-50 border-b">
+            <tr>
+              <th class="p-3 text-xs font-black uppercase text-gray-400">Hora</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400">Turno</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400">Tipo</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400">Equip.</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400 text-right">Kg</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400 text-right">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="logsList" class="divide-y"></tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
 
   <script>
     lucide.createIcons();
 
-    // ✅ Troque pelas suas credenciais
     const SUPABASE_URL = "https://zujimauhxpbtmllpyfvl.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_mGw-sOGtdwJoCIUAoS5hfQ_aYvKOEPn";
 
@@ -165,6 +206,12 @@
 
     const el = (id) => document.getElementById(id);
     const fmt = (n) => Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 3 });
+
+    function fmtTime(iso){
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return '';
+      return d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+    }
 
     let machines = [];
     let scales = [];
@@ -187,32 +234,41 @@
       el('sourceId').innerHTML = list.map(x => `<option value="${x.id}">${x.code}</option>`).join('');
     }
 
-    async function loadTotals() {
-      const { data, error } = await sb.from('v_prod_today').select('*').limit(1).single();
+    async function loadTotalsByDate() {
+      const prod_date = el('datePick').value;
+
+      const { data, error } = await sb
+        .from('v_prod_totals')
+        .select('shift,source_type,total_kg')
+        .eq('prod_date', prod_date);
+
       if (error) { console.error(error); return; }
-      if (!data) return;
 
-      const machS1 = Number(data.mach_s1 || 0);
-      const scaleS1 = Number(data.scale_s1 || 0);
-      const machS2 = Number(data.mach_s2 || 0);
-      const scaleS2 = Number(data.scale_s2 || 0);
+      const get = (shift, type) =>
+        Number((data || []).find(x => x.shift === shift && x.source_type === type)?.total_kg || 0);
 
-      // 4 cards
+      const machS1 = get(1,'machine');
+      const scaleS1 = get(1,'scale');
+      const machS2 = get(2,'machine');
+      const scaleS2 = get(2,'scale');
+
       el('machS1').innerText = fmt(machS1);
       el('scaleS1').innerText = fmt(scaleS1);
       el('machS2').innerText = fmt(machS2);
       el('scaleS2').innerText = fmt(scaleS2);
 
-      // SOMAS FINAIS (como você pediu)
-      const machAll = machS1 + machS2;
-      const scaleAll = scaleS1 + scaleS2;
-
-      el('machAll').innerText = fmt(machAll);
-      el('scaleAll').innerText = fmt(scaleAll);
+      el('machAll').innerText = fmt(machS1 + machS2);
+      el('scaleAll').innerText = fmt(scaleS1 + scaleS2);
     }
 
-    async function loadBySource() {
-      const { data, error } = await sb.from('v_prod_today_by_source').select('*');
+    async function loadBySourceByDate() {
+      const prod_date = el('datePick').value;
+
+      const { data, error } = await sb
+        .from('v_prod_by_source')
+        .select('shift,source_type,source_code,total_kg')
+        .eq('prod_date', prod_date);
+
       if (error) { console.error(error); return; }
 
       el('bySource').innerHTML = (data || []).map(r => `
@@ -222,15 +278,60 @@
           <td class="p-3 font-black">${r.source_code || '-'}</td>
           <td class="p-3 text-right font-black">${fmt(r.total_kg)}</td>
         </tr>
-      `).join('') || `<tr><td class="p-6 text-center text-gray-400 font-bold" colspan="4">Sem lançamentos hoje</td></tr>`;
+      `).join('') || `<tr><td class="p-6 text-center text-gray-400 font-bold" colspan="4">Sem lançamentos</td></tr>`;
+    }
+
+    async function loadLogs() {
+      const prod_date = el('datePick').value;
+
+      const { data, error } = await sb
+        .from('v_prod_logs_list')
+        .select('*')
+        .eq('prod_date', prod_date)
+        .limit(200);
+
+      if (error) { console.error(error); return; }
+
+      el('logsList').innerHTML = (data || []).map(r => `
+        <tr>
+          <td class="p-3 font-bold">${fmtTime(r.created_at)}</td>
+          <td class="p-3 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
+          <td class="p-3">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</td>
+          <td class="p-3 font-black">${r.source_code || '-'}</td>
+          <td class="p-3 text-right font-black">${fmt(r.kg)}</td>
+          <td class="p-3 text-right">
+            <button class="bg-red-600 text-white px-3 py-2 rounded-xl text-xs font-black hover:bg-red-700"
+              onclick="deleteLog(${r.id})">
+              Apagar
+            </button>
+          </td>
+        </tr>
+      `).join('') || `<tr><td colspan="6" class="p-6 text-center text-gray-400 font-bold">Sem lançamentos</td></tr>`;
+    }
+
+    async function deleteLog(id) {
+      if (!confirm("Tem certeza que deseja apagar este lançamento?")) return;
+
+      const { error } = await sb.from('production_logs').delete().eq('id', id);
+      if (error) { console.error(error); alert("Erro ao apagar."); return; }
+
+      await reloadAll();
+    }
+    window.deleteLog = deleteLog;
+
+    async function reloadAll() {
+      el('todayLabel').innerText = el('datePick').value.split('-').reverse().join('/');
+      await Promise.all([loadTotalsByDate(), loadBySourceByDate(), loadLogs()]);
     }
 
     async function addLog() {
+      const prod_date = el('datePick').value;
       const shift = Number(el('shift').value);
       const source_type = el('sourceType').value;
       const source_id = Number(el('sourceId').value);
       const kg = Number(el('kg').value);
 
+      if (!prod_date) { el('msg').innerText = "Selecione a data."; return; }
       if (!source_id || Number.isNaN(kg) || kg <= 0) {
         el('msg').innerText = "Informe um KG válido e selecione o equipamento.";
         return;
@@ -240,7 +341,7 @@
       el('msg').innerText = "Salvando...";
 
       const { error } = await sb.from('production_logs').insert([{
-        shift, source_type, source_id, kg
+        prod_date, shift, source_type, source_id, kg
       }]);
 
       el('btnAdd').disabled = false;
@@ -253,30 +354,42 @@
 
       el('kg').value = '';
       el('msg').innerText = "Lançamento registrado ✅";
-
-      // Atualiza na hora (além do realtime)
-      await Promise.all([loadTotals(), loadBySource()]);
+      await reloadAll();
     }
 
     function startRealtime() {
       sb.channel('prod-realtime')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'production_logs' }, async () => {
-          await Promise.all([loadTotals(), loadBySource()]);
-        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'production_logs' }, () => reloadAll())
         .subscribe();
     }
 
     window.onload = async () => {
+      const today = new Date().toISOString().slice(0,10);
+      el('datePick').value = today;
       el('todayLabel').innerText = new Date().toLocaleDateString('pt-BR');
 
       await loadCatalog();
-      await Promise.all([loadTotals(), loadBySource()]);
+      await reloadAll();
       startRealtime();
 
       el('sourceType').addEventListener('change', refreshSourceDropdown);
       el('btnAdd').addEventListener('click', addLog);
-      el('btnRefresh').addEventListener('click', async () => {
-        await Promise.all([loadTotals(), loadBySource()]);
+
+      el('btnRefresh').addEventListener('click', reloadAll);
+      el('btnRefreshLogs').addEventListener('click', loadLogs);
+
+      el('datePick').addEventListener('change', reloadAll);
+
+      el('btnHoje').addEventListener('click', () => {
+        el('datePick').value = today;
+        reloadAll();
+      });
+
+      el('btnOntem').addEventListener('click', () => {
+        const d = new Date();
+        d.setDate(d.getDate() - 1);
+        el('datePick').value = d.toISOString().slice(0,10);
+        reloadAll();
       });
 
       lucide.createIcons();
