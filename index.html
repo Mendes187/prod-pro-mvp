@@ -12,37 +12,41 @@
 
 <body class="bg-gray-50 text-gray-900">
 
-  <nav class="bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50">
+  <nav class="bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50 border-b border-slate-800">
     <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-black flex items-center gap-2 tracking-tighter">
-        <i data-lucide="bar-chart-3" class="text-blue-500"></i>
-        PROD <span class="text-blue-500">PRO</span>
+      <h1 class="text-xl font-black flex items-center gap-3 tracking-tighter">
+        <div class="bg-blue-500/20 p-2 rounded-xl border border-blue-500/30">
+          <i data-lucide="factory" class="text-blue-400 w-6 h-6"></i>
+        </div>
+        <span>PROD <span class="text-blue-500">PRO</span></span>
       </h1>
-      <div class="text-xs font-black text-slate-300">
-        Data selecionada: <span id="todayLabel"></span>
+      
+      <div class="flex items-center gap-3 bg-slate-800/50 px-4 py-2 rounded-full border border-slate-700">
+        <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i>
+        <div class="text-xs font-black text-slate-300">
+          <span id="todayLabel"></span>
+        </div>
       </div>
     </div>
   </nav>
 
   <main class="container mx-auto p-4 md:p-8 space-y-8">
 
-    <!-- SELETOR DE DATA (HISTÓRICO) -->
     <section class="bg-white p-4 rounded-2xl border shadow-sm flex flex-wrap gap-3 items-center justify-between">
       <div>
         <div class="text-xs font-black uppercase text-gray-400">Data do apontamento</div>
-        <input id="datePick" type="date" class="mt-1 border p-3 rounded-xl font-bold"/>
+        <input id="datePick" type="date" class="mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"/>
       </div>
       <div class="flex gap-2">
-        <button id="btnOntem" class="bg-slate-100 px-4 py-3 rounded-xl font-black hover:bg-slate-200">
+        <button id="btnOntem" class="bg-slate-100 px-5 py-3 rounded-xl font-black hover:bg-slate-200 transition-colors">
           Ontem
         </button>
-        <button id="btnHoje" class="bg-slate-900 text-white px-4 py-3 rounded-xl font-black hover:bg-black">
+        <button id="btnHoje" class="bg-slate-900 text-white px-5 py-3 rounded-xl font-black hover:bg-black transition-colors">
           Hoje
         </button>
       </div>
     </section>
 
-    <!-- 4 TOTAIS SEPARADOS -->
     <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
 
       <div class="bg-white p-6 rounded-2xl border shadow-sm">
@@ -75,9 +79,10 @@
 
     </section>
 
-    <!-- RESUMO FINAL (SOMAS DO DIA) -->
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
-      <h2 class="text-xl font-black mb-2">Resumo Final</h2>
+      <h2 class="text-xl font-black mb-2 flex items-center gap-2">
+        <i data-lucide="line-chart" class="text-gray-400 w-5 h-5"></i> Resumo Final
+      </h2>
       <p class="text-sm text-gray-500 mb-6">
         Total das máquinas (soma dos dois turnos) e total das balanças (soma dos dois turnos).
       </p>
@@ -99,9 +104,10 @@
       </div>
     </section>
 
-    <!-- LANÇAMENTO -->
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
-      <h2 class="text-xl font-black mb-2">Lançar Produção</h2>
+      <h2 class="text-xl font-black mb-2 flex items-center gap-2">
+        <i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Lançar Produção
+      </h2>
       <p class="text-sm text-gray-500 mb-6">
         Selecione turno, tipo (máquina/balança), equipamento e informe kg. Pode lançar várias vezes ao dia.
       </p>
@@ -109,7 +115,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Turno</label>
-          <select id="shift" class="w-full mt-1 border p-3 rounded-xl font-bold">
+          <select id="shift" class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none">
             <option value="1">1º Turno</option>
             <option value="2">2º Turno</option>
           </select>
@@ -117,7 +123,7 @@
 
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Tipo</label>
-          <select id="sourceType" class="w-full mt-1 border p-3 rounded-xl font-bold">
+          <select id="sourceType" class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none">
             <option value="machine">Máquina</option>
             <option value="scale">Balança</option>
           </select>
@@ -125,31 +131,30 @@
 
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Equipamento</label>
-          <select id="sourceId" class="w-full mt-1 border p-3 rounded-xl font-bold"></select>
+          <select id="sourceId" class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"></select>
         </div>
 
         <div>
           <label class="text-xs font-black uppercase text-gray-400">Kg</label>
           <input id="kg" type="number" step="0.001" min="0"
                  placeholder="Ex: 1250"
-                 class="w-full mt-1 border p-3 rounded-xl font-bold"/>
+                 class="w-full mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"/>
         </div>
       </div>
 
       <div class="mt-5 flex items-center gap-3">
-        <button id="btnAdd" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-black hover:bg-blue-700 shadow-lg shadow-blue-100 flex items-center gap-2">
-          <i data-lucide="plus-circle"></i> Adicionar
+        <button id="btnAdd" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-black hover:bg-blue-700 shadow-lg shadow-blue-100 flex items-center gap-2 transition-all active:scale-95">
+          <i data-lucide="plus"></i> Adicionar
         </button>
         <span id="msg" class="text-sm font-bold text-gray-500"></span>
       </div>
     </section>
 
-    <!-- RESUMO POR EQUIPAMENTO (DATA SELECIONADA) -->
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
       <div class="flex items-center justify-between flex-wrap gap-3">
         <h2 class="text-xl font-black">Resumo por Máquina / Balança</h2>
         <button id="btnRefresh" class="text-sm font-black uppercase text-blue-600 hover:text-blue-800 flex items-center gap-2">
-          <i data-lucide="refresh-cw"></i> Atualizar
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Atualizar
         </button>
       </div>
 
@@ -157,10 +162,10 @@
         <table class="w-full text-left">
           <thead class="bg-slate-50 border-b">
             <tr>
-              <th class="p-3 text-xs font-black uppercase text-gray-400">Turno</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400">Tipo</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400">Equipamento</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400 text-right">Total (kg)</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Turno</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Tipo</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Equipamento</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400 text-right">Total (kg)</th>
             </tr>
           </thead>
           <tbody id="bySource" class="divide-y"></tbody>
@@ -168,7 +173,6 @@
       </div>
     </section>
 
-    <!-- LANÇAMENTOS DO DIA (APAGAR ERROS) -->
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
       <div class="flex items-center justify-between gap-3 flex-wrap">
         <h2 class="text-xl font-black">Lançamentos (corrigir erro)</h2>
@@ -181,12 +185,12 @@
         <table class="w-full text-left">
           <thead class="bg-slate-50 border-b">
             <tr>
-              <th class="p-3 text-xs font-black uppercase text-gray-400">Hora</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400">Turno</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400">Tipo</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400">Equip.</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400 text-right">Kg</th>
-              <th class="p-3 text-xs font-black uppercase text-gray-400 text-right">Ação</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Hora</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Turno</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Tipo</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Equip.</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400 text-right">Kg</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400 text-right">Ação</th>
             </tr>
           </thead>
           <tbody id="logsList" class="divide-y"></tbody>
@@ -197,6 +201,7 @@
   </main>
 
   <script>
+    // Inicia os ícones ao carregar
     lucide.createIcons();
 
     const SUPABASE_URL = "https://zujimauhxpbtmllpyfvl.supabase.co";
@@ -273,10 +278,10 @@
 
       el('bySource').innerHTML = (data || []).map(r => `
         <tr>
-          <td class="p-3 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
-          <td class="p-3">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</td>
-          <td class="p-3 font-black">${r.source_code || '-'}</td>
-          <td class="p-3 text-right font-black">${fmt(r.total_kg)}</td>
+          <td class="p-4 font-black text-slate-600">${r.shift === 1 ? '1º' : '2º'}</td>
+          <td class="p-4"><span class="bg-slate-100 px-2 py-1 rounded text-xs font-bold">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</span></td>
+          <td class="p-4 font-black">${r.source_code || '-'}</td>
+          <td class="p-4 text-right font-black text-blue-600">${fmt(r.total_kg)}</td>
         </tr>
       `).join('') || `<tr><td class="p-6 text-center text-gray-400 font-bold" colspan="4">Sem lançamentos</td></tr>`;
     }
@@ -294,13 +299,13 @@
 
       el('logsList').innerHTML = (data || []).map(r => `
         <tr>
-          <td class="p-3 font-bold">${fmtTime(r.created_at)}</td>
-          <td class="p-3 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
-          <td class="p-3">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</td>
-          <td class="p-3 font-black">${r.source_code || '-'}</td>
-          <td class="p-3 text-right font-black">${fmt(r.kg)}</td>
-          <td class="p-3 text-right">
-            <button class="bg-red-600 text-white px-3 py-2 rounded-xl text-xs font-black hover:bg-red-700"
+          <td class="p-4 font-bold text-slate-500">${fmtTime(r.created_at)}</td>
+          <td class="p-4 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
+          <td class="p-4 text-xs font-bold uppercase text-slate-400">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</td>
+          <td class="p-4 font-black">${r.source_code || '-'}</td>
+          <td class="p-4 text-right font-black text-slate-800">${fmt(r.kg)}</td>
+          <td class="p-4 text-right">
+            <button class="bg-red-50 text-red-600 border border-red-100 px-3 py-2 rounded-xl text-xs font-black hover:bg-red-600 hover:text-white transition-all"
               onclick="deleteLog(${r.id})">
               Apagar
             </button>
@@ -322,6 +327,7 @@
     async function reloadAll() {
       el('todayLabel').innerText = el('datePick').value.split('-').reverse().join('/');
       await Promise.all([loadTotalsByDate(), loadBySourceByDate(), loadLogs()]);
+      lucide.createIcons();
     }
 
     async function addLog() {
