@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>PROD PRO</title>
+  <title>PROD PRO - Produção do Dia</title>
 
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/9356/9356230.png">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9356/9356230.png">
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/9496/9496432.png">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9496/9496432.png">
   
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -17,159 +16,150 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-gray-50 text-gray-900">
 
-  <nav class="bg-slate-900 text-white p-4 shadow-2xl sticky top-0 z-50 border-b border-white/5">
+  <nav class="bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50">
     <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl font-black flex items-center gap-3 tracking-tighter">
-        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-lg shadow-lg shadow-blue-500/20">
-          <i data-lucide="activity" class="text-white w-5 h-5"></i>
-        </div>
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-          PROD <span class="text-blue-500">PRO</span>
-        </span>
+      <h1 class="text-xl font-black flex items-center gap-2 tracking-tighter">
+        <i data-lucide="scroll" class="text-blue-500"></i>
+        PROD <span class="text-blue-500">PRO</span>
       </h1>
-      
-      <div class="flex items-center gap-3 bg-slate-800/80 px-4 py-2 rounded-xl border border-white/10 backdrop-blur-md">
-        <i data-lucide="calendar" class="w-4 h-4 text-blue-400"></i>
-        <span id="todayLabel" class="text-xs font-bold text-slate-200"></span>
+      <div class="text-xs font-black text-slate-300">
+        Data selecionada: <span id="todayLabel"></span>
       </div>
     </div>
   </nav>
 
-  <main class="container mx-auto p-4 md:p-8 space-y-6">
+  <main class="container mx-auto p-4 md:p-8 space-y-8">
 
-    <section class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm flex flex-wrap gap-4 items-center justify-between">
-      <div class="flex-1 min-w-[200px]">
-        <label class="text-[10px] font-black uppercase text-slate-400 tracking-wider">Período de Produção</label>
-        <input id="datePick" type="date" class="w-full mt-1 bg-slate-50 border-none p-3 rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"/>
+    <section class="bg-white p-4 rounded-2xl border shadow-sm flex flex-wrap gap-3 items-center justify-between">
+      <div>
+        <div class="text-xs font-black uppercase text-gray-400">Data do apontamento</div>
+        <input id="datePick" type="date" class="mt-1 border p-3 rounded-xl font-bold focus:ring-2 focus:ring-blue-500 outline-none transition-all"/>
       </div>
       <div class="flex gap-2">
-        <button id="btnOntem" class="bg-slate-100 px-6 py-3 rounded-2xl font-black text-slate-600 hover:bg-slate-200 transition-all active:scale-95">Ontem</button>
-        <button id="btnHoje" class="bg-slate-900 text-white px-6 py-3 rounded-2xl font-black hover:shadow-lg hover:shadow-slate-900/20 transition-all active:scale-95">Hoje</button>
+        <button id="btnOntem" class="bg-slate-100 px-5 py-3 rounded-xl font-black hover:bg-slate-200">Ontem</button>
+        <button id="btnHoje" class="bg-slate-900 text-white px-5 py-3 rounded-xl font-black hover:bg-black">Hoje</button>
       </div>
     </section>
 
     <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-        <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Máquinas • Turno 1</p>
-        <div class="flex items-baseline gap-2 mt-2">
-          <span id="machS1" class="text-3xl font-black text-slate-900">0</span>
-          <span class="text-xs font-bold text-slate-400 italic">kg</span>
-        </div>
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Máquinas - 1º Turno</div>
+        <div class="text-3xl font-black mt-2"><span id="machS1">0</span> <span class="text-sm text-gray-400">kg</span></div>
       </div>
-      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-        <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Balança • Turno 1</p>
-        <div class="flex items-baseline gap-2 mt-2">
-          <span id="scaleS1" class="text-3xl font-black text-slate-900">0</span>
-          <span class="text-xs font-bold text-slate-400 italic">kg</span>
-        </div>
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Balança - 1º Turno</div>
+        <div class="text-3xl font-black mt-2"><span id="scaleS1">0</span> <span class="text-sm text-gray-400">kg</span></div>
       </div>
-      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-        <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Máquinas • Turno 2</p>
-        <div class="flex items-baseline gap-2 mt-2">
-          <span id="machS2" class="text-3xl font-black text-slate-900">0</span>
-          <span class="text-xs font-bold text-slate-400 italic">kg</span>
-        </div>
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Máquinas - 2º Turno</div>
+        <div class="text-3xl font-black mt-2"><span id="machS2">0</span> <span class="text-sm text-gray-400">kg</span></div>
       </div>
-      <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-        <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Balança • Turno 2</p>
-        <div class="flex items-baseline gap-2 mt-2">
-          <span id="scaleS2" class="text-3xl font-black text-slate-900">0</span>
-          <span class="text-xs font-bold text-slate-400 italic">kg</span>
-        </div>
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Balança - 2º Turno</div>
+        <div class="text-3xl font-black mt-2"><span id="scaleS2">0</span> <span class="text-sm text-gray-400">kg</span></div>
       </div>
     </section>
 
-    <section class="bg-slate-900 rounded-[2rem] p-8 text-white shadow-2xl relative overflow-hidden">
-      <div class="relative z-10">
-        <h2 class="text-lg font-black flex items-center gap-2 opacity-80 uppercase tracking-tighter">
-          <i data-lucide="trending-up" class="w-5 h-5 text-blue-400"></i> Performance Consolidada
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          <div>
-            <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Total Máquinas</p>
-            <div class="flex items-baseline gap-2">
-              <span id="machAll" class="text-5xl font-black">0</span>
-              <span class="text-blue-400 font-bold">kg</span>
-            </div>
-          </div>
-          <div>
-            <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Total Balanças</p>
-            <div class="flex items-baseline gap-2">
-              <span id="scaleAll" class="text-5xl font-black">0</span>
-              <span class="text-emerald-400 font-bold">kg</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl"></div>
-    </section>
-
-    <section class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-      <h2 class="text-xl font-black mb-8 flex items-center gap-2">
-        <i data-lucide="plus-circle" class="text-blue-600"></i> Entrada de Dados
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <h2 class="text-xl font-black mb-2 flex items-center gap-2">
+        <i data-lucide="line-chart" class="text-gray-400 w-5 h-5"></i> Resumo Final
       </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="space-y-1">
-          <label class="text-[10px] font-black uppercase text-slate-400">Turno</label>
-          <select id="shift" class="w-full bg-slate-50 border-none p-4 rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+          <div class="text-xs font-black uppercase text-blue-700">Total produzido (Máquinas)</div>
+          <div class="text-3xl font-black text-blue-800 mt-2"><span id="machAll">0</span> <span class="text-sm text-blue-600">kg</span></div>
+        </div>
+        <div class="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
+          <div class="text-xs font-black uppercase text-emerald-700">Total pesado (Balanças)</div>
+          <div class="text-3xl font-black text-emerald-800 mt-2"><span id="scaleAll">0</span> <span class="text-sm text-emerald-600">kg</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <h2 class="text-xl font-black mb-6 flex items-center gap-2">
+        <i data-lucide="plus-circle" class="text-blue-600 w-5 h-5"></i> Lançar Produção
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Turno</label>
+          <select id="shift" class="w-full mt-1 border p-3 rounded-xl font-bold outline-none">
             <option value="1">1º Turno</option>
             <option value="2">2º Turno</option>
           </select>
         </div>
-        <div class="space-y-1">
-          <label class="text-[10px] font-black uppercase text-slate-400">Origem</label>
-          <select id="sourceType" class="w-full bg-slate-50 border-none p-4 rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Tipo</label>
+          <select id="sourceType" class="w-full mt-1 border p-3 rounded-xl font-bold outline-none">
             <option value="machine">Máquina</option>
             <option value="scale">Balança</option>
           </select>
         </div>
-        <div class="space-y-1">
-          <label class="text-[10px] font-black uppercase text-slate-400">Equipamento</label>
-          <select id="sourceId" class="w-full bg-slate-50 border-none p-4 rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"></select>
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Equipamento</label>
+          <select id="sourceId" class="w-full mt-1 border p-3 rounded-xl font-bold outline-none"></select>
         </div>
-        <div class="space-y-1">
-          <label class="text-[10px] font-black uppercase text-slate-400">Peso (kg)</label>
-          <input id="kg" type="number" step="0.001" placeholder="0.000" class="w-full bg-slate-50 border-none p-4 rounded-2xl font-bold focus:ring-2 focus:ring-blue-500 outline-none"/>
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Kg</label>
+          <input id="kg" type="number" step="0.001" placeholder="Ex: 1250" class="w-full mt-1 border p-3 rounded-xl font-bold outline-none"/>
         </div>
       </div>
-      <div class="mt-8 flex items-center gap-4">
-        <button id="btnAdd" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black hover:bg-blue-700 shadow-xl shadow-blue-500/20 flex items-center gap-2 transition-all active:scale-95">
-          <i data-lucide="plus" class="w-5 h-5"></i> Registrar Produção
+      <div class="mt-5 flex items-center gap-3">
+        <button id="btnAdd" class="bg-blue-600 text-white px-8 py-3 rounded-xl font-black hover:bg-blue-700 shadow-lg flex items-center gap-2 transition-all active:scale-95">
+          <i data-lucide="plus"></i> Adicionar
         </button>
-        <span id="msg" class="text-sm font-bold text-slate-400"></span>
+        <span id="msg" class="text-sm font-bold text-gray-500"></span>
       </div>
     </section>
 
-    <section class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-      <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-        <h2 class="text-lg font-black uppercase tracking-tighter italic">Logs de Operação</h2>
-        <button id="btnRefreshLogs" class="p-2 hover:bg-slate-100 rounded-full transition-colors">
-          <i data-lucide="rotate-cw" class="w-5 h-5 text-slate-400"></i>
-        </button>
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-black">Resumo por Equipamento</h2>
+        <button id="btnRefresh" class="text-sm font-black text-blue-600">Atualizar</button>
       </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left">
-          <thead class="bg-slate-50/50">
+      <div class="overflow-x-auto text-left">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b">
             <tr>
-              <th class="p-4 text-[10px] font-black uppercase text-slate-400">Horário</th>
-              <th class="p-4 text-[10px] font-black uppercase text-slate-400">Ref</th>
-              <th class="p-4 text-[10px] font-black uppercase text-slate-400 text-right">Massa (kg)</th>
-              <th class="p-4 text-[10px] font-black uppercase text-slate-400 text-right">Ação</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Turno</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Tipo</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Equipamento</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400 text-right">Total (kg)</th>
             </tr>
           </thead>
-          <tbody id="logsList" class="divide-y divide-slate-100"></tbody>
+          <tbody id="bySource" class="divide-y"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-black">Lançamentos (corrigir erro)</h2>
+        <button id="btnRefreshLogs" class="text-sm font-black text-blue-600">Atualizar</button>
+      </div>
+      <div class="overflow-x-auto text-left">
+        <table class="w-full">
+          <thead class="bg-slate-50 border-b">
+            <tr>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Hora</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Turno</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Tipo</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400">Equip.</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400 text-right">Kg</th>
+              <th class="p-4 text-xs font-black uppercase text-gray-400 text-right">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="logsList" class="divide-y"></tbody>
         </table>
       </div>
     </section>
   </main>
 
   <script>
-    // Inicialização do Lucide
     lucide.createIcons();
 
-    // Configuração Supabase
     const SUPABASE_URL = "https://zujimauhxpbtmllpyfvl.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_mGw-sOGtdwJoCIUAoS5hfQ_aYvKOEPn";
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -179,7 +169,7 @@
 
     function fmtTime(iso){
       const d = new Date(iso);
-      return Number.isNaN(d.getTime()) ? '--:--' : d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+      return Number.isNaN(d.getTime()) ? '' : d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
     }
 
     let machines = [];
@@ -212,57 +202,56 @@
       el('machAll').innerText = fmt(m1 + m2); el('scaleAll').innerText = fmt(s1 + s2);
     }
 
+    async function loadBySourceByDate() {
+      const prod_date = el('datePick').value;
+      const { data } = await sb.from('v_prod_by_source').select('*').eq('prod_date', prod_date);
+      el('bySource').innerHTML = (data || []).map(r => `
+        <tr>
+          <td class="p-4 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
+          <td class="p-4"><span class="bg-slate-100 px-2 py-1 rounded text-xs font-bold uppercase">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</span></td>
+          <td class="p-4 font-black">${r.source_code || '-'}</td>
+          <td class="p-4 text-right font-black text-blue-600">${fmt(r.total_kg)}</td>
+        </tr>
+      `).join('') || `<tr><td colspan="4" class="p-4 text-center">Vazio</td></tr>`;
+    }
+
     async function loadLogs() {
       const prod_date = el('datePick').value;
-      const { data } = await sb.from('v_prod_logs_list').select('*').eq('prod_date', prod_date).order('created_at', {ascending: false});
-      
+      const { data } = await sb.from('v_prod_logs_list').select('*').eq('prod_date', prod_date).limit(200);
       el('logsList').innerHTML = (data || []).map(r => `
-        <tr class="hover:bg-slate-50 transition-colors">
-          <td class="p-4 text-xs font-bold text-slate-400">${fmtTime(r.created_at)}</td>
-          <td class="p-4">
-             <div class="text-xs font-black text-slate-700">${r.source_code}</div>
-             <div class="text-[9px] uppercase font-bold text-slate-400">${r.shift}º Turno • ${r.source_type === 'machine' ? 'Máq' : 'Bal'}</div>
-          </td>
-          <td class="p-4 text-right font-black text-slate-900">${fmt(r.kg)}</td>
+        <tr>
+          <td class="p-4 text-slate-400 font-bold">${fmtTime(r.created_at)}</td>
+          <td class="p-4 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
+          <td class="p-4 text-xs font-bold uppercase">${r.source_type === 'machine' ? 'Máq' : 'Bal'}</td>
+          <td class="p-4 font-black">${r.source_code}</td>
+          <td class="p-4 text-right font-black">${fmt(r.kg)}</td>
           <td class="p-4 text-right">
-            <button onclick="deleteLog(${r.id})" class="p-2 text-slate-300 hover:text-red-500 transition-colors">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
+            <button class="text-red-600 font-black text-xs" onclick="deleteLog(${r.id})">Apagar</button>
           </td>
         </tr>
-      `).join('') || `<tr><td colspan="4" class="p-10 text-center text-slate-300 font-bold">Sem dados para esta data</td></tr>`;
-      lucide.createIcons();
+      `).join('') || `<tr><td colspan="6" class="p-4 text-center">Vazio</td></tr>`;
     }
 
     async function deleteLog(id) {
-      if (!confirm("Excluir este lançamento?")) return;
+      if (!confirm("Apagar registro?")) return;
       await sb.from('production_logs').delete().eq('id', id);
       await reloadAll();
     }
     window.deleteLog = deleteLog;
 
     async function reloadAll() {
-      const dateVal = el('datePick').value;
-      el('todayLabel').innerText = dateVal.split('-').reverse().join('/');
-      await Promise.all([loadTotalsByDate(), loadLogs()]);
+      el('todayLabel').innerText = el('datePick').value.split('-').reverse().join('/');
+      await Promise.all([loadTotalsByDate(), loadBySourceByDate(), loadLogs()]);
+      lucide.createIcons();
     }
 
     async function addLog() {
       const prod_date = el('datePick').value, shift = Number(el('shift').value), sourceType = el('sourceType').value, sourceId = Number(el('sourceId').value), kg = Number(el('kg').value);
-      if (!sourceId || isNaN(kg) || kg <= 0) { el('msg').innerText = "⚠️ Verifique o peso"; return; }
-      
-      el('btnAdd').disabled = true; 
-      el('msg').innerText = "Processando...";
-      
+      if (!sourceId || isNaN(kg) || kg <= 0) { el('msg').innerText = "Verifique os dados."; return; }
+      el('btnAdd').disabled = true; el('msg').innerText = "Salvando...";
       const { error } = await sb.from('production_logs').insert([{ prod_date, shift, source_type: sourceType, source_id: sourceId, kg }]);
-      
       el('btnAdd').disabled = false;
-      if (!error) { 
-        el('kg').value = ''; 
-        el('msg').innerText = "Salvo com sucesso!"; 
-        setTimeout(() => el('msg').innerText = "", 2000);
-        await reloadAll(); 
-      }
+      if (!error) { el('kg').value = ''; el('msg').innerText = "Salvo ✅"; await reloadAll(); }
     }
 
     window.onload = async () => {
@@ -270,16 +259,12 @@
       el('datePick').value = today;
       await loadCatalog();
       await reloadAll();
-
       el('sourceType').addEventListener('change', refreshSourceDropdown);
       el('btnAdd').addEventListener('click', addLog);
       el('datePick').addEventListener('change', reloadAll);
       el('btnHoje').addEventListener('click', () => { el('datePick').value = today; reloadAll(); });
-      el('btnOntem').addEventListener('click', () => { 
-        const d = new Date(); d.setDate(d.getDate() - 1); 
-        el('datePick').value = d.toISOString().slice(0,10); 
-        reloadAll(); 
-      });
+      el('btnOntem').addEventListener('click', () => { const d = new Date(); d.setDate(d.getDate() - 1); el('datePick').value = d.toISOString().slice(0,10); reloadAll(); });
+      el('btnRefresh').addEventListener('click', reloadAll);
       el('btnRefreshLogs').addEventListener('click', loadLogs);
     };
   </script>
