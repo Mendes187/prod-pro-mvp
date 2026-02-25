@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PROD PRO - Produção do Dia</title>
+  <title>PROD PRO - Produção do Dia (Turnos)</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,209 +12,276 @@
 
 <body class="bg-gray-50 text-gray-900">
 
-<nav class="bg-slate-900 text-white p-4 shadow-xl">
-  <div class="container mx-auto flex justify-between items-center">
-    <h1 class="text-xl font-black flex items-center gap-2">
-      <i data-lucide="bar-chart-3" class="text-blue-500"></i>
-      PROD <span class="text-blue-500">PRO</span>
-    </h1>
-    <span id="today" class="text-xs font-bold text-slate-300"></span>
-  </div>
-</nav>
-
-<main class="container mx-auto p-6 space-y-8">
-
-<!-- CARDS DE TOTAIS -->
-<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-
-  <div class="bg-white p-5 rounded-2xl shadow border">
-    <div class="text-xs uppercase font-black text-gray-400">Máquinas 1º Turno</div>
-    <div class="text-3xl font-black mt-2"><span id="machS1">0</span> kg</div>
-  </div>
-
-  <div class="bg-white p-5 rounded-2xl shadow border">
-    <div class="text-xs uppercase font-black text-gray-400">Balanças 1º Turno</div>
-    <div class="text-3xl font-black mt-2"><span id="scaleS1">0</span> kg</div>
-  </div>
-
-  <div class="bg-white p-5 rounded-2xl shadow border">
-    <div class="text-xs uppercase font-black text-gray-400">Máquinas 2º Turno</div>
-    <div class="text-3xl font-black mt-2"><span id="machS2">0</span> kg</div>
-  </div>
-
-  <div class="bg-white p-5 rounded-2xl shadow border">
-    <div class="text-xs uppercase font-black text-gray-400">Balanças 2º Turno</div>
-    <div class="text-3xl font-black mt-2"><span id="scaleS2">0</span> kg</div>
-  </div>
-
-</section>
-
-<!-- RELATÓRIO FINAL -->
-<section class="bg-white p-6 rounded-2xl shadow border">
-  <h2 class="text-lg font-black mb-4">Relatório do Dia</h2>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="bg-slate-50 p-4 rounded-xl border">
-      <div class="text-xs font-black uppercase text-gray-400">Total 1º Turno</div>
-      <div class="text-2xl font-black"><span id="totS1">0</span> kg</div>
+  <nav class="bg-slate-900 text-white p-4 shadow-xl sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-black flex items-center gap-2 tracking-tighter">
+        <i data-lucide="bar-chart-3" class="text-blue-500"></i>
+        PROD <span class="text-blue-500">PRO</span>
+      </h1>
+      <div class="text-xs font-black text-slate-300">
+        Hoje: <span id="todayLabel"></span>
+      </div>
     </div>
+  </nav>
 
-    <div class="bg-slate-50 p-4 rounded-xl border">
-      <div class="text-xs font-black uppercase text-gray-400">Total 2º Turno</div>
-      <div class="text-2xl font-black"><span id="totS2">0</span> kg</div>
-    </div>
+  <main class="container mx-auto p-4 md:p-8 space-y-8">
 
-    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
-      <div class="text-xs font-black uppercase text-blue-600">Total Geral</div>
-      <div class="text-2xl font-black text-blue-700"><span id="totAll">0</span> kg</div>
-    </div>
-  </div>
-</section>
+    <!-- 4 TOTAIS SEPARADOS -->
+    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
 
-<!-- LANÇAMENTO -->
-<section class="bg-white p-6 rounded-2xl shadow border">
-  <h2 class="text-lg font-black mb-4">Lançar Produção</h2>
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Máquinas - 1º Turno</div>
+        <div class="text-3xl font-black mt-2">
+          <span id="machS1">0</span> <span class="text-sm text-gray-400">kg</span>
+        </div>
+      </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Balança - 1º Turno</div>
+        <div class="text-3xl font-black mt-2">
+          <span id="scaleS1">0</span> <span class="text-sm text-gray-400">kg</span>
+        </div>
+      </div>
 
-    <div>
-      <label class="text-xs font-black uppercase text-gray-400">Turno</label>
-      <select id="shift" class="w-full border p-3 rounded-xl font-bold mt-1">
-        <option value="1">1º Turno</option>
-        <option value="2">2º Turno</option>
-      </select>
-    </div>
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Máquinas - 2º Turno</div>
+        <div class="text-3xl font-black mt-2">
+          <span id="machS2">0</span> <span class="text-sm text-gray-400">kg</span>
+        </div>
+      </div>
 
-    <div>
-      <label class="text-xs font-black uppercase text-gray-400">Tipo</label>
-      <select id="sourceType" class="w-full border p-3 rounded-xl font-bold mt-1">
-        <option value="machine">Máquina</option>
-        <option value="scale">Balança</option>
-      </select>
-    </div>
+      <div class="bg-white p-6 rounded-2xl border shadow-sm">
+        <div class="text-xs font-black uppercase text-gray-400">Produção Balança - 2º Turno</div>
+        <div class="text-3xl font-black mt-2">
+          <span id="scaleS2">0</span> <span class="text-sm text-gray-400">kg</span>
+        </div>
+      </div>
 
-    <div>
-      <label class="text-xs font-black uppercase text-gray-400">Equipamento</label>
-      <select id="sourceId" class="w-full border p-3 rounded-xl font-bold mt-1"></select>
-    </div>
+    </section>
 
-    <div>
-      <label class="text-xs font-black uppercase text-gray-400">Kg</label>
-      <input id="kg" type="number" step="0.001" min="0"
-        class="w-full border p-3 rounded-xl font-bold mt-1"
-        placeholder="Ex: 1200" />
-    </div>
+    <!-- RELATÓRIO FINAL (SOMAS DO DIA) -->
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <h2 class="text-xl font-black mb-2">Resumo Final do Dia</h2>
+      <p class="text-sm text-gray-500 mb-6">
+        Total das máquinas (soma dos dois turnos) e total das balanças (soma dos dois turnos).
+      </p>
 
-  </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+          <div class="text-xs font-black uppercase text-blue-700">Total produzido (Máquinas) - 1º + 2º turno</div>
+          <div class="text-3xl font-black text-blue-800 mt-2">
+            <span id="machAll">0</span> <span class="text-sm text-blue-600">kg</span>
+          </div>
+        </div>
 
-  <button id="btnAdd"
-    class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl font-black hover:bg-blue-700">
-    Adicionar
-  </button>
+        <div class="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
+          <div class="text-xs font-black uppercase text-emerald-700">Total pesado (Balanças) - 1º + 2º turno</div>
+          <div class="text-3xl font-black text-emerald-800 mt-2">
+            <span id="scaleAll">0</span> <span class="text-sm text-emerald-600">kg</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <p id="msg" class="mt-2 text-sm font-bold text-gray-500"></p>
-</section>
+    <!-- LANÇAMENTO -->
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <h2 class="text-xl font-black mb-2">Lançar Produção</h2>
+      <p class="text-sm text-gray-500 mb-6">
+        Selecione turno, tipo (máquina/balança), equipamento e informe kg. Pode lançar várias vezes ao dia.
+      </p>
 
-</main>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Turno</label>
+          <select id="shift" class="w-full mt-1 border p-3 rounded-xl font-bold">
+            <option value="1">1º Turno</option>
+            <option value="2">2º Turno</option>
+          </select>
+        </div>
 
-<script>
-lucide.createIcons();
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Tipo</label>
+          <select id="sourceType" class="w-full mt-1 border p-3 rounded-xl font-bold">
+            <option value="machine">Máquina</option>
+            <option value="scale">Balança</option>
+          </select>
+        </div>
 
-const SUPABASE_URL = "https://zujimauhxpbtmllpyfvl.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_mGw-sOGtdwJoCIUAoS5hfQ_aYvKOEPn";
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Equipamento</label>
+          <select id="sourceId" class="w-full mt-1 border p-3 rounded-xl font-bold"></select>
+        </div>
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        <div>
+          <label class="text-xs font-black uppercase text-gray-400">Kg</label>
+          <input id="kg" type="number" step="0.001" min="0"
+                 placeholder="Ex: 1250"
+                 class="w-full mt-1 border p-3 rounded-xl font-bold"/>
+        </div>
+      </div>
 
-const el = (id) => document.getElementById(id);
-const fmt = (n) => Number(n || 0).toLocaleString("pt-BR");
+      <div class="mt-5 flex items-center gap-3">
+        <button id="btnAdd" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-black hover:bg-blue-700 shadow-lg shadow-blue-100 flex items-center gap-2">
+          <i data-lucide="plus-circle"></i> Adicionar
+        </button>
+        <span id="msg" class="text-sm font-bold text-gray-500"></span>
+      </div>
+    </section>
 
-let machines = [];
-let scales = [];
+    <!-- RESUMO POR EQUIPAMENTO (HOJE) -->
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <h2 class="text-xl font-black">Resumo por Máquina / Balança (Hoje)</h2>
+        <button id="btnRefresh" class="text-sm font-black uppercase text-blue-600 hover:text-blue-800 flex items-center gap-2">
+          <i data-lucide="refresh-cw"></i> Atualizar
+        </button>
+      </div>
 
-async function loadCatalog() {
-  const { data: m } = await sb.from("machines").select("id,code").order("code");
-  const { data: s } = await sb.from("scales").select("id,code").order("code");
-  machines = m || [];
-  scales = s || [];
-  updateDropdown();
-}
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-left">
+          <thead class="bg-slate-50 border-b">
+            <tr>
+              <th class="p-3 text-xs font-black uppercase text-gray-400">Turno</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400">Tipo</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400">Equipamento</th>
+              <th class="p-3 text-xs font-black uppercase text-gray-400 text-right">Total (kg)</th>
+            </tr>
+          </thead>
+          <tbody id="bySource" class="divide-y"></tbody>
+        </table>
+      </div>
+    </section>
 
-function updateDropdown() {
-  const type = el("sourceType").value;
-  const list = type === "machine" ? machines : scales;
-  el("sourceId").innerHTML = list.map(x =>
-    `<option value="${x.id}">${x.code}</option>`
-  ).join("");
-}
+  </main>
 
-async function loadTotals() {
-  const { data } = await sb.from("v_prod_today").select("*").single();
-  if (!data) return;
+  <script>
+    lucide.createIcons();
 
-  el("machS1").innerText = fmt(data.mach_s1);
-  el("scaleS1").innerText = fmt(data.scale_s1);
-  el("machS2").innerText = fmt(data.mach_s2);
-  el("scaleS2").innerText = fmt(data.scale_s2);
+    // ✅ Troque pelas suas credenciais
+    const SUPABASE_URL = "https://zujimauhxpbtmllpyfvl.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_mGw-sOGtdwJoCIUAoS5hfQ_aYvKOEPn";
 
-  const tot1 = data.mach_s1 + data.scale_s1;
-  const tot2 = data.mach_s2 + data.scale_s2;
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  el("totS1").innerText = fmt(tot1);
-  el("totS2").innerText = fmt(tot2);
-  el("totAll").innerText = fmt(tot1 + tot2);
-}
+    const el = (id) => document.getElementById(id);
+    const fmt = (n) => Number(n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 3 });
 
-async function addLog() {
-  const shift = Number(el("shift").value);
-  const source_type = el("sourceType").value;
-  const source_id = Number(el("sourceId").value);
-  const kg = Number(el("kg").value);
+    let machines = [];
+    let scales = [];
 
-  if (!kg || kg <= 0) {
-    el("msg").innerText = "Informe um valor válido.";
-    return;
-  }
+    async function loadCatalog() {
+      const [{ data: m, error: me }, { data: s, error: se }] = await Promise.all([
+        sb.from('machines').select('id,code').eq('active', true).order('code'),
+        sb.from('scales').select('id,code').eq('active', true).order('code')
+      ]);
+      if (me) console.error(me);
+      if (se) console.error(se);
+      machines = m || [];
+      scales = s || [];
+      refreshSourceDropdown();
+    }
 
-  el("btnAdd").disabled = true;
-  el("msg").innerText = "Salvando...";
+    function refreshSourceDropdown() {
+      const type = el('sourceType').value;
+      const list = (type === 'machine') ? machines : scales;
+      el('sourceId').innerHTML = list.map(x => `<option value="${x.id}">${x.code}</option>`).join('');
+    }
 
-  const { error } = await sb.from("production_logs").insert([{
-    shift,
-    source_type,
-    source_id,
-    kg
-  }]);
+    async function loadTotals() {
+      const { data, error } = await sb.from('v_prod_today').select('*').limit(1).single();
+      if (error) { console.error(error); return; }
+      if (!data) return;
 
-  el("btnAdd").disabled = false;
+      const machS1 = Number(data.mach_s1 || 0);
+      const scaleS1 = Number(data.scale_s1 || 0);
+      const machS2 = Number(data.mach_s2 || 0);
+      const scaleS2 = Number(data.scale_s2 || 0);
 
-  if (error) {
-    el("msg").innerText = "Erro ao salvar.";
-    return;
-  }
+      // 4 cards
+      el('machS1').innerText = fmt(machS1);
+      el('scaleS1').innerText = fmt(scaleS1);
+      el('machS2').innerText = fmt(machS2);
+      el('scaleS2').innerText = fmt(scaleS2);
 
-  el("kg").value = "";
-  el("msg").innerText = "Registrado com sucesso!";
-}
+      // SOMAS FINAIS (como você pediu)
+      const machAll = machS1 + machS2;
+      const scaleAll = scaleS1 + scaleS2;
 
-function startRealtime() {
-  sb.channel("prod-realtime")
-    .on("postgres_changes",
-      { event: "*", schema: "public", table: "production_logs" },
-      loadTotals
-    )
-    .subscribe();
-}
+      el('machAll').innerText = fmt(machAll);
+      el('scaleAll').innerText = fmt(scaleAll);
+    }
 
-window.onload = async () => {
-  el("today").innerText = new Date().toLocaleDateString("pt-BR");
-  await loadCatalog();
-  await loadTotals();
-  startRealtime();
+    async function loadBySource() {
+      const { data, error } = await sb.from('v_prod_today_by_source').select('*');
+      if (error) { console.error(error); return; }
 
-  el("sourceType").addEventListener("change", updateDropdown);
-  el("btnAdd").addEventListener("click", addLog);
-};
-</script>
+      el('bySource').innerHTML = (data || []).map(r => `
+        <tr>
+          <td class="p-3 font-black">${r.shift === 1 ? '1º' : '2º'}</td>
+          <td class="p-3">${r.source_type === 'machine' ? 'Máquina' : 'Balança'}</td>
+          <td class="p-3 font-black">${r.source_code || '-'}</td>
+          <td class="p-3 text-right font-black">${fmt(r.total_kg)}</td>
+        </tr>
+      `).join('') || `<tr><td class="p-6 text-center text-gray-400 font-bold" colspan="4">Sem lançamentos hoje</td></tr>`;
+    }
+
+    async function addLog() {
+      const shift = Number(el('shift').value);
+      const source_type = el('sourceType').value;
+      const source_id = Number(el('sourceId').value);
+      const kg = Number(el('kg').value);
+
+      if (!source_id || Number.isNaN(kg) || kg <= 0) {
+        el('msg').innerText = "Informe um KG válido e selecione o equipamento.";
+        return;
+      }
+
+      el('btnAdd').disabled = true;
+      el('msg').innerText = "Salvando...";
+
+      const { error } = await sb.from('production_logs').insert([{
+        shift, source_type, source_id, kg
+      }]);
+
+      el('btnAdd').disabled = false;
+
+      if (error) {
+        console.error(error);
+        el('msg').innerText = "Erro ao salvar (ver Console/F12).";
+        return;
+      }
+
+      el('kg').value = '';
+      el('msg').innerText = "Lançamento registrado ✅";
+
+      // Atualiza na hora (além do realtime)
+      await Promise.all([loadTotals(), loadBySource()]);
+    }
+
+    function startRealtime() {
+      sb.channel('prod-realtime')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'production_logs' }, async () => {
+          await Promise.all([loadTotals(), loadBySource()]);
+        })
+        .subscribe();
+    }
+
+    window.onload = async () => {
+      el('todayLabel').innerText = new Date().toLocaleDateString('pt-BR');
+
+      await loadCatalog();
+      await Promise.all([loadTotals(), loadBySource()]);
+      startRealtime();
+
+      el('sourceType').addEventListener('change', refreshSourceDropdown);
+      el('btnAdd').addEventListener('click', addLog);
+      el('btnRefresh').addEventListener('click', async () => {
+        await Promise.all([loadTotals(), loadBySource()]);
+      });
+
+      lucide.createIcons();
+    };
+  </script>
 
 </body>
 </html>
