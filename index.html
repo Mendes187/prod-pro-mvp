@@ -63,6 +63,27 @@
     </section>
 
     <section class="bg-white p-6 rounded-2xl border shadow-sm">
+      <h2 class="text-xl font-black mb-2">Resumo Final</h2>
+      <p class="text-sm text-gray-500 mb-6">Soma total dos dois turnos para produção e pesagem.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-blue-50 rounded-2xl p-5 border border-blue-100">
+          <div class="text-xs font-black uppercase text-blue-700">Total Máquinas (1º + 2º)</div>
+          <div class="text-3xl font-black text-blue-800 mt-2">
+            <span id="machAll">0</span> <span class="text-sm text-blue-600 font-normal">kg</span>
+          </div>
+        </div>
+
+        <div class="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
+          <div class="text-xs font-black uppercase text-emerald-700">Total Balanças (1º + 2º)</div>
+          <div class="text-3xl font-black text-emerald-800 mt-2">
+            <span id="scaleAll">0</span> <span class="text-sm text-emerald-600 font-normal">kg</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl border shadow-sm">
       <h2 class="text-xl font-black mb-6 flex items-center gap-2 text-blue-600">
         <i data-lucide="plus-circle"></i> Novo Lançamento
       </h2>
@@ -105,8 +126,8 @@
           <i data-lucide="refresh-cw" class="w-3 h-3"></i> Atualizar
         </button>
       </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left">
+      <div class="overflow-x-auto text-left">
+        <table class="w-full">
           <thead class="bg-slate-50 border-b">
             <tr>
               <th class="p-4 text-[10px] font-black uppercase text-gray-400">Hora</th>
@@ -161,10 +182,16 @@
       const { data } = await sb.from('v_prod_totals').select('*').eq('prod_date', prod_date);
       const get = (shift, type) => Number((data || []).find(x => x.shift === shift && x.source_type === type)?.total_kg || 0);
       
-      el('machS1').innerText = fmt(get(1,'machine'));
-      el('scaleS1').innerText = fmt(get(1,'scale'));
-      el('machS2').innerText = fmt(get(2,'machine'));
-      el('scaleS2').innerText = fmt(get(2,'scale'));
+      const m1 = get(1,'machine'), s1 = get(1,'scale'), m2 = get(2,'machine'), s2 = get(2,'scale');
+      
+      el('machS1').innerText = fmt(m1);
+      el('scaleS1').innerText = fmt(s1);
+      el('machS2').innerText = fmt(m2);
+      el('scaleS2').innerText = fmt(s2);
+      
+      // Somas Consolidadas (Restaurado)
+      el('machAll').innerText = fmt(m1 + m2);
+      el('scaleAll').innerText = fmt(s1 + s2);
     }
 
     async function loadLogs() {
@@ -182,7 +209,7 @@
             </button>
           </td>
         </tr>
-      `).join('') || `<tr><td colspan="5" class="p-8 text-center text-gray-300 font-bold">Sem dados nesta data</td></tr>`;
+      `).join('') || `<tr><td colspan="5" class="p-8 text-center text-gray-300 font-bold">Sem dados</td></tr>`;
       lucide.createIcons();
     }
 
@@ -201,37 +228,25 @@
 
     async function addLog() {
       const prod_date = el('datePick').value;
-      const shift = Number(el('shift').value);
-      const sourceType = el('sourceType').value;
-      const sourceId = Number(el('sourceId').value);
-      const kg = Number(el('kg').value);
+      const shift = Number(el('shift').value), sourceType = el('sourceType').value, sourceId = Number(el('sourceId').value), kg = Number(el('kg').value);
 
       if (!prod_date || !sourceId || isNaN(kg) || kg <= 0) { 
-        el('msg').innerText = "⚠️ Preencha a data e o peso."; 
+        el('msg').innerText = "⚠️ Verifique a data e o peso."; 
         return; 
       }
       
-      el('btnAdd').disabled = true;
-      el('msg').innerText = "Gravando...";
-      
-      // Inserção direta no Supabase
+      el('btnAdd').disabled = true; el('msg').innerText = "Gravando...";
       const { error } = await sb.from('production_logs').insert([{ 
-        prod_date: prod_date, 
-        shift: shift, 
-        source_type: sourceType, 
-        source_id: sourceId, 
-        kg: kg 
+        prod_date: prod_date, shift: shift, source_type: sourceType, source_id: sourceId, kg: kg 
       }]);
       
       el('btnAdd').disabled = false;
       if (!error) { 
-        el('kg').value = ''; 
-        el('msg').innerText = "Salvo! ✅"; 
+        el('kg').value = ''; el('msg').innerText = "Salvo! ✅"; 
         setTimeout(() => el('msg').innerText = "", 2000);
         await reloadAll(); 
       } else {
         el('msg').innerText = "Erro ao guardar.";
-        console.error(error);
       }
     }
 
